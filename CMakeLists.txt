@@ -29,7 +29,15 @@ add_executable(${PROJECT_NAME} main.cc)
 #
 # and comment out the following lines
 find_package(Drogon CONFIG REQUIRED)
-target_link_libraries(${PROJECT_NAME} PRIVATE Drogon::Drogon)
+find_package(PkgConfig REQUIRED)
+
+pkg_check_modules(LIBPQXX REQUIRED libpqxx)
+pkg_check_modules(LIBPQ REQUIRED libpq)
+
+include_directories(${LIBPQXX_INCLUDE_DIRS} ${LIBPQ_INCLUDE_DIRS})
+link_directories(${LIBPQXX_LIBRARY_DIRS} ${LIBPQ_LIBRARY_DIRS})
+
+target_link_libraries(${PROJECT_NAME} PRIVATE ${LIBPQXX_LIBRARIES} ${LIBPQ_LIBRARIES}  Drogon::Drogon)
 
 # ##############################################################################
 
